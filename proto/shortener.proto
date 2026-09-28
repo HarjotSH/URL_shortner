@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package shortener;
+
+option go_package = "url-shortener/go-service/proto";
+
+// Shortener is implemented by the Rust redirect engine and called by the Go API.
+service Shortener {
+  rpc SetUrl (SetUrlRequest) returns (SetUrlResponse);
+  rpc GetUrl (GetUrlRequest) returns (GetUrlResponse);
+  rpc IncrementClick (ClickRequest) returns (ClickResponse);
+  rpc GetClicks (ClickRequest) returns (ClicksCountResponse);
+}
+
+message SetUrlRequest {
+  string code = 1;
+  string original_url = 2;
+}
+
+message SetUrlResponse {
+  bool success = 1;
+}
+
+message GetUrlRequest {
+  string code = 1;
+}
+
+message GetUrlResponse {
+  string original_url = 1;
+  bool found = 2;
+}
+
+message ClickRequest {
+  string code = 1;
+}
+
+message ClickResponse {
+  bool success = 1;
+}
+
+message ClicksCountResponse {
+  int64 count = 1;
+}
