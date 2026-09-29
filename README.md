@@ -50,27 +50,24 @@ productivity-focused language, and a performance-critical core in a
 systems language, talking over a stable network contract. That's the
 story worth telling in an interview, not just "I used Go and Rust."
 
-## Running it
+## Running the Project
 
-Requirements: Go 1.21+, Rust (stable) + Cargo. No Redis/Postgres needed —
-the Rust service keeps state in memory so you can run this in one step.
+### Prerequisites
+
+Make sure the following are installed:
+
+- Go 1.21 or later
+- Rust (stable)
+- Cargo
+
+The project currently uses an in-memory store, so Redis or PostgreSQL is not required to run it locally.
+
+### Start Both Services
+
+The easiest way to start the application is with the provided `run.sh` script:
 
 ```bash
 ./run.sh
-```
-
-This builds and starts both services (Rust on `:9090`, Go on `:8080`).
-Logs go to `rust.log` and `go.log`.
-
-Or run them manually in two terminals:
-
-```bash
-# terminal 1
-cd rust-service && cargo run --release
-
-# terminal 2
-cd go-service && go run main.go
-```
 
 ## Try it
 
