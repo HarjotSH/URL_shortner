@@ -103,23 +103,44 @@ curl -X POST http://localhost:8080/shorten \
 
 ## Extending it (good "next steps" to mention on your resume/in an interview)
 
-- **Swap in Redis**: replace the `HashMap` in `rust-service/src/main.rs`
-  with the `redis` crate — the HTTP handlers don't need to change.
-- **Swap in Postgres**: add persistent storage on the Go side for the
-  short-code → owner / creation-time metadata.
-- **Move to gRPC**: the two services currently talk JSON/HTTP for
-  simplicity and zero extra tooling. A natural upgrade is to define
-  `proto/shortener.proto` (already sketched in this repo) and switch to
-  gRPC with `tonic` (Rust) and `google.golang.org/grpc` (Go) for typed,
-  binary-efficient communication — a good "what I'd do with more time"
-  talking point.
-- **Load test it**: run `k6` or `hey` against `/r/{code}` and report
-  throughput/latency numbers — concrete numbers are worth more on a resume
-  than "built a scalable system."
+## Future Improvements
 
-## Suggested resume bullet
+The current implementation focuses on demonstrating the core architecture and
+communication between Go and Rust. The following improvements could be added
+as the project evolves.
 
-> Built a polyglot URL-shortening service with a Go API layer and a Rust
-> redirect engine communicating over HTTP/JSON, with click analytics and
-> an in-memory store designed to be swapped for Redis/Postgres in
-> production.
+### Persistent Storage
+
+The Rust service currently stores URL mappings and click counts in memory.
+A production deployment could use Redis or another persistent datastore so
+data survives service restarts and can be shared across multiple instances.
+
+### Database Integration
+
+PostgreSQL could be introduced for persistent application metadata such as
+users, ownership information, creation timestamps, and URL management.
+
+### gRPC Communication
+
+The services currently communicate using HTTP/JSON for simplicity and easy
+debugging. A future version could use gRPC with Protocol Buffers to provide a
+strongly typed service contract between the Go and Rust components.
+
+### Load Testing
+
+The redirect endpoint is a performance-sensitive part of the application.
+Tools such as `k6` or `hey` could be used to measure throughput, latency, and
+the behavior of the service under concurrent requests.
+
+### Observability
+
+Future versions could add structured logging, health-check endpoints, request
+metrics, and distributed tracing to make the services easier to monitor and
+debug in a production environment.
+
+### Scalability
+
+The in-memory storage model is suitable for local development but limits
+horizontal scaling. Moving state to an external datastore would allow
+multiple instances of the redirect service to share URL mappings and click
+statistics.
