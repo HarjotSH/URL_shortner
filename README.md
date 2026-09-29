@@ -79,7 +79,7 @@ cd go-service && go run main.go
 curl -X POST localhost:8080/shorten -d '{"url":"https://anthropic.com"}'
 # -> {"code":"fLh3Fk","short_url":"http://localhost:8080/r/fLh3Fk"}
 
-# Follow it (redirects to the original URL, counts the click)
+# Follow it (redirects to the original URL, counts the click) 
 curl -i localhost:8080/r/fLh3Fk
 
 # Check analytics
@@ -87,17 +87,22 @@ curl localhost:8080/analytics/fLh3Fk
 # -> {"count":1}
 ```
 
-## API reference
+## API Reference
 
-| Method | Path                | Description                          |
-|--------|---------------------|---------------------------------------|
-| POST   | `/shorten`           | Body: `{"url": "..."}` → creates a short code |
-| GET    | `/r/{code}`          | 302-redirects to the original URL, increments click count |
-| GET    | `/analytics/{code}`  | Returns `{"count": N}` total clicks |
+The Go service exposes the following public endpoints:
 
-Internally, Go calls the Rust service's own small JSON API
-(`/set`, `/get/{code}`, `/click/{code}`, `/clicks/{code}`) — see
-`rust-service/src/main.rs`.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/shorten` | Creates a short URL from the submitted URL |
+| GET | `/r/{code}` | Redirects to the original URL and records a click |
+| GET | `/analytics/{code}` | Returns the total number of clicks |
+
+### Create a Short URL
+
+```bash
+curl -X POST http://localhost:8080/shorten \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://example.com"}'
 
 ## Extending it (good "next steps" to mention on your resume/in an interview)
 
