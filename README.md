@@ -1,7 +1,14 @@
 # Polyglot URL Shortener (Go + Rust)
 
-A URL shortener split across two services on purpose, so each language does
-the job it's best at:
+A lightweight URL-shortening service built using Go and Rust, designed as a
+two-service architecture to explore polyglot backend development.
+
+The Go service acts as the public API and handles URL validation, short-code
+generation, and request orchestration. The Rust service acts as the redirect
+engine, providing fast URL lookups and click tracking using an in-memory store.
+
+The two services communicate through HTTP/JSON, keeping the boundary between
+the API layer and the Rust backend simple and easy to extend.
 
 - **Rust** (`rust-service/`) is the *redirect engine* — the hot path that
   needs to be fast under load. It holds the code→URL mapping and click
