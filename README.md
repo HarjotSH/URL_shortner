@@ -25,6 +25,22 @@ Client → Go API (:8080) → Rust redirect engine (:9090)
            /r/{code}           (code -> url, code -> clicks)
            /analytics/{code}
 ```
+## Architecture
+
+The application is divided into two independent services:
+
+```text
+Client
+  |
+  v
+Go API (:8080)
+  |
+  | HTTP/JSON
+  v
+Rust Redirect Engine (:9090)
+  |
+  v
+In-Memory URL Store
 
 ## Why two services instead of one language
 
